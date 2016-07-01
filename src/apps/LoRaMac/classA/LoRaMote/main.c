@@ -59,7 +59,7 @@ Maintainer: Miguel Luis and Gregory Cristian
  *
  * \remark Please note that ETSI mandates duty cycled transmissions. Use only for test purposes
  */
-#define LORAWAN_DUTYCYCLE_ON                        true
+#define LORAWAN_DUTYCYCLE_ON                        false//true  //S.L
 
 #define USE_SEMTECH_DEFAULT_CHANNEL_LINEUP          1
 
@@ -698,7 +698,7 @@ int main( void )
                 MlmeReq_t mlmeReq;
 
                 // Initialize LoRaMac device unique ID
-                BoardGetUniqueId( DevEui );
+                //BoardGetUniqueId( DevEui ); //S.L
 
                 mlmeReq.Type = MLME_JOIN;
 
