@@ -145,8 +145,8 @@ void BoardInitPeriph( void )
     GpsInit( );
 
     // Switch LED 1, 2, 3 OFF
-    GpioWrite( &Led1, 1 );
-    GpioWrite( &Led2, 1 );
+    GpioWrite( &Led1, 0);//1 ); S.L
+    GpioWrite( &Led2, 0);//1 ); S.L
     GpioWrite( &Led3, 1 );
 }
 
@@ -173,7 +173,7 @@ void BoardInitMcu( void )
 
         BoardUnusedIoInit( );
 
-        I2cInit( &I2c, I2C_SCL, I2C_SDA );
+        //I2cInit( &I2c, I2C_SCL, I2C_SDA );  //S.L
     }
     else
     {
@@ -182,8 +182,8 @@ void BoardInitMcu( void )
 
     AdcInit( &Adc, BAT_LEVEL );
 
-    SpiInit( &SX1272.Spi, RADIO_MOSI, RADIO_MISO, RADIO_SCLK, NC );
-    SX1272IoInit( );
+    SpiInit( &SX1276.Spi, RADIO_MOSI, RADIO_MISO, RADIO_SCLK, NC );
+    SX1276IoInit( );
 
 #if defined( USE_DEBUG_PINS )
         GpioInit( &DbgPin1, CON_EXT_1, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
@@ -207,8 +207,8 @@ void BoardDeInitMcu( void )
 {
     Gpio_t ioPin;
 
-    SpiDeInit( &SX1272.Spi );
-    SX1272IoDeInit( );
+    SpiDeInit( &SX1276.Spi );
+    SX1276IoDeInit( );
 
 #if ( defined( USE_DEBUG_PINS ) && !defined( LOW_POWER_MODE_ENABLE ) )
     GpioInit( &DbgPin1, CON_EXT_1, PIN_ANALOGIC, PIN_PUSH_PULL, PIN_NO_PULL, 0 );

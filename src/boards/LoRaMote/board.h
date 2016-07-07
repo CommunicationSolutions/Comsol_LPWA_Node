@@ -31,7 +31,13 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include "i2c.h"
 #include "uart.h"
 #include "radio.h"
-#include "sx1272/sx1272.h"
+
+#if defined (SET_SX1276)
+  #include "sx1276/sx1276.h"
+#elif defined (SET_SX1272)
+  #include "sx1272/sx1272.h"
+#endif
+
 #include "mag3110.h"
 #include "mma8451.h"
 #include "mpl3115.h"
@@ -39,7 +45,13 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include "gps.h"
 #include "gps-board.h"
 #include "rtc-board.h"
-#include "sx1272-board.h"
+
+#if defined (SET_SX1276)
+  #include "sx1276-board.h"
+#elif defined (SET_SX1272)
+  #include "sx1272-board.h"
+#endif
+
 #include "uart-board.h"
 
 #if defined( USE_USB_CDC )
@@ -49,7 +61,7 @@ Maintainer: Miguel Luis and Gregory Cristian
 /*!
  * Define indicating if an external IO expander is to be used
  */
-#define BOARD_IOE_EXT
+//#define BOARD_IOE_EXT  S.L Moved within LoRaMote compiler define
 
 /*!
  * Generic definition
@@ -62,81 +74,166 @@ Maintainer: Miguel Luis and Gregory Cristian
 #define FAIL                                        0
 #endif
 
-/*!
- * Board IO Extender pins definitions
+#ifdef SET_SX1272
+
+	/*!
+ * Define indicating if an external IO expander is to be used
  */
-#define IRQ_MPL3115                                 IOE_0
-#define IRQ_MAG3110                                 IOE_1
-#define GPS_POWER_ON                                IOE_2
-#define SPARE_IO_EXT_3                              IOE_3
-#define SPARE_IO_EXT_4                              IOE_4
-#define SPARE_IO_EXT_5                              IOE_5
-#define SPARE_IO_EXT_6                              IOE_6
-#define SPARE_IO_EXT_7                              IOE_7
-#define N_IRQ_SX9500                                IOE_8
-#define IRQ_1_MMA8451                               IOE_9
-#define IRQ_2_MMA8451                               IOE_10
-#define TX_EN_SX9500                                IOE_11
-#define LED_1                                       IOE_12
-#define LED_2                                       IOE_13
-#define LED_3                                       IOE_14
-#define SPARE_IO_NC                                 IOE_15
+	#define BOARD_IOE_EXT
 
-/*!
- * Board MCU pins definitions
- */
+	/*!
+	 * Board IO Extender pins definitions
+	 */
+	#define IRQ_MPL3115                                 IOE_0
+	#define IRQ_MAG3110                                 IOE_1
+	#define GPS_POWER_ON                                IOE_2
+	#define SPARE_IO_EXT_3                              IOE_3
+	#define SPARE_IO_EXT_4                              IOE_4
+	#define SPARE_IO_EXT_5                              IOE_5
+	#define SPARE_IO_EXT_6                              IOE_6
+	#define SPARE_IO_EXT_7                              IOE_7
+	#define N_IRQ_SX9500                                IOE_8
+	#define IRQ_1_MMA8451                               IOE_9
+	#define IRQ_2_MMA8451                               IOE_10
+	#define TX_EN_SX9500                                IOE_11
+	#define LED_1                                       IOE_12
+	#define LED_2                                       IOE_13
+	#define LED_3                                       IOE_14
+	#define SPARE_IO_NC                                 IOE_15
 
-#define RADIO_RESET                                 PA_2
+	/*!
+	 * Board MCU pins definitions
+	 */
 
-#define RADIO_MOSI                                  PA_7
-#define RADIO_MISO                                  PA_6
-#define RADIO_SCLK                                  PA_5
-#define RADIO_NSS                                   PB_0
+	#define RADIO_RESET                                 PA_2
 
-#define RADIO_DIO_0                                 PB_1
-#define RADIO_DIO_1                                 PB_10
-#define RADIO_DIO_2                                 PB_11
-#define RADIO_DIO_3                                 PB_7
-#define RADIO_DIO_4                                 PB_5
-#define RADIO_DIO_5                                 PB_4
+	#define RADIO_MOSI                                  PA_7
+	#define RADIO_MISO                                  PA_6
+	#define RADIO_SCLK                                  PA_5
+	#define RADIO_NSS                                   PB_0
 
-#define RADIO_ANT_SWITCH_RX                         PC_13
-#define RADIO_ANT_SWITCH_TX                         PA_4
+	#define RADIO_DIO_0                                 PB_1
+	#define RADIO_DIO_1                                 PB_10
+	#define RADIO_DIO_2                                 PB_11
+	#define RADIO_DIO_3                                 PB_7
+	#define RADIO_DIO_4                                 PB_5
+	#define RADIO_DIO_5                                 PB_4
 
-#define OSC_LSE_IN                                  PC_14
-#define OSC_LSE_OUT                                 PC_15
+	#define RADIO_ANT_SWITCH_RX                         PC_13
+	#define RADIO_ANT_SWITCH_TX                         PA_4
 
-#define OSC_HSE_IN                                  PH_0
-#define OSC_HSE_OUT                                 PH_1
+	#define OSC_LSE_IN                                  PC_14
+	#define OSC_LSE_OUT                                 PC_15
 
-#define USB_DM                                      PA_11
-#define USB_DP                                      PA_12
+	#define OSC_HSE_IN                                  PH_0
+	#define OSC_HSE_OUT                                 PH_1
 
-#define JTAG_TMS                                    PA_13
-#define JTAG_TCK                                    PA_14
-#define JTAG_TDI                                    PA_15
-#define JTAG_TDO                                    PB_3
-#define JTAG_NRST                                   PB_4
+	#define USB_DM                                      PA_11
+	#define USB_DP                                      PA_12
 
-#define I2C_SCL                                     PB_8
-#define I2C_SDA                                     PB_9
+	#define JTAG_TMS                                    PA_13
+	#define JTAG_TCK                                    PA_14
+	#define JTAG_TDI                                    PA_15
+	#define JTAG_TDO                                    PB_3
+	#define JTAG_NRST                                   PB_4
 
-#define CON_EXT_1                                   PB_13
-#define CON_EXT_3                                   PB_15
-#define CON_EXT_7                                   PB_12
-#define CON_EXT_8                                   PB_14
-#define CON_EXT_9                                   PA_1
-#define BAT_LEVEL                                   PA_3
+	#define I2C_SCL                                     PB_8
+	#define I2C_SDA                                     PB_9
 
-#define BOOT_1                                      PB_2
+	#define CON_EXT_1                                   PB_13
+	#define CON_EXT_3                                   PB_15
+	#define CON_EXT_7                                   PB_12
+	#define CON_EXT_8                                   PB_14
+	#define CON_EXT_9                                   PA_1
+	#define BAT_LEVEL                                   PA_3
 
-#define GPS_PPS                                     PA_8
-#define UART_TX                                     PA_9
-#define UART_RX                                     PA_10
+	#define BOOT_1                                      PB_2
 
-#define PIN_PB6                                     PB_6
-#define WKUP1                                       PA_0
+	#define GPS_PPS                                     PA_8
+	#define UART_TX                                     PA_9
+	#define UART_RX                                     PA_10
 
+	#define PIN_PB6                                     PB_6
+	#define WKUP1                                       PA_0
+
+#elif defined SET_SX1276
+
+	/*!
+	 * Board IO Extender pins definitions
+	 */
+	#define IRQ_MPL3115                                 IOE_0
+	#define IRQ_MAG3110                                 IOE_1
+	#define GPS_POWER_ON                                IOE_2
+	#define SPARE_IO_EXT_3                              IOE_3
+	#define SPARE_IO_EXT_4                              IOE_4
+	#define SPARE_IO_EXT_5                              IOE_5
+	#define SPARE_IO_EXT_6                              IOE_6
+	#define SPARE_IO_EXT_7                              IOE_7
+	#define N_IRQ_SX9500                                IOE_8
+	#define IRQ_1_MMA8451                               IOE_9
+	#define IRQ_2_MMA8451                               IOE_10
+	#define TX_EN_SX9500                                IOE_11
+	#define LED_1                                       PB_6 //S.L Changed
+	#define LED_2                                       PB_7 //S.L Changed
+	#define LED_3                                       IOE_14
+	#define SPARE_IO_NC                                 IOE_15
+
+	/*!
+	 * Board MCU pins definitions
+	 */
+
+	#define RADIO_RESET                                 PB_1 //PA_2 //S.L Changed
+
+	#define RADIO_MOSI                                  PA_7
+	#define RADIO_MISO                                  PA_6
+	#define RADIO_SCLK                                  PA_5
+	#define RADIO_NSS                                   PB_0
+
+	#define RADIO_DIO_0                                 PB_11 //PB_1
+	#define RADIO_DIO_1                                 PB_14 //PB_10
+	#define RADIO_DIO_2                                 PB_5 //PB_11
+	#define RADIO_DIO_3                                 PB_10 //PB_7
+	#define RADIO_DIO_4                                 PB_5
+	#define RADIO_DIO_5                                 PB_4
+
+	#define RADIO_ANT_SWITCH_RX                         PC_13
+	#define RADIO_ANT_SWITCH_TX                         PA_4
+
+	#define OSC_LSE_IN                                  PC_14
+	#define OSC_LSE_OUT                                 PC_15
+
+	#define OSC_HSE_IN                                  PH_0
+	#define OSC_HSE_OUT                                 PH_1
+
+	#define USB_DM                                      PA_11
+	#define USB_DP                                      PA_12
+
+	#define JTAG_TMS                                    PA_13
+	#define JTAG_TCK                                    PA_14
+	#define JTAG_TDI                                    PA_15
+	#define JTAG_TDO                                    PB_3
+	#define JTAG_NRST                                   PB_4
+
+	#define I2C_SCL                                     PB_8
+	#define I2C_SDA                                     PB_9
+
+	#define CON_EXT_1                                   PB_13
+	#define CON_EXT_3                                   PB_15
+	#define CON_EXT_7                                   PB_12
+	#define CON_EXT_8                                   PB_14
+	#define CON_EXT_9                                   PA_1
+	#define BAT_LEVEL                                   PA_3
+
+	#define BOOT_1                                      PB_2
+
+	#define GPS_PPS                                     PA_8
+	#define UART_TX                                     PA_9
+	#define UART_RX                                     PA_10
+
+	#define PIN_PB6                                     PB_6
+	#define WKUP1                                       PA_0
+
+#endif
 
 /*!
  * LED GPIO pins objects
@@ -166,7 +263,6 @@ extern Gpio_t DbgPin1;
 extern Gpio_t DbgPin2;
 extern Gpio_t DbgPin3;
 extern Gpio_t DbgPin4;
-extern Gpio_t DbgPin5;
 #endif
 
 /*!

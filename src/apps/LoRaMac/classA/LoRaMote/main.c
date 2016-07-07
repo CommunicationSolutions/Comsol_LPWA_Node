@@ -371,7 +371,7 @@ static void OnLed1TimerEvent( void )
 {
     TimerStop( &Led1Timer );
     // Switch LED 1 OFF
-    GpioWrite( &Led1, 1 );
+    GpioWrite( &Led1, 0);//1 ); S.L
 }
 
 /*!
@@ -381,7 +381,7 @@ static void OnLed2TimerEvent( void )
 {
     TimerStop( &Led2Timer );
     // Switch LED 2 OFF
-    GpioWrite( &Led2, 1 );
+    GpioWrite( &Led2, 0);//1 );  S.L
 }
 
 /*!
@@ -419,7 +419,7 @@ static void McpsConfirm( McpsConfirm_t *mcpsConfirm )
         }
 
         // Switch LED 1 ON
-        GpioWrite( &Led1, 0 );
+        GpioWrite( &Led1, 1);//0 );  S.L
         TimerStart( &Led1Timer );
     }
     NextTx = true;
@@ -591,7 +591,8 @@ static void McpsIndication( McpsIndication_t *mcpsIndication )
     }
 
     // Switch LED 2 ON for each received downlink
-    GpioWrite( &Led2, 0 );
+    GpioWrite( &Led1, 0);//0 );  S.L added
+    GpioWrite( &Led2, 1);//0 );  S.L
     TimerStart( &Led2Timer );
 }
 
@@ -662,10 +663,10 @@ int main( void )
                 TimerInit( &TxNextPacketTimer, OnTxNextPacketTimerEvent );
 
                 TimerInit( &Led1Timer, OnLed1TimerEvent );
-                TimerSetValue( &Led1Timer, 25 );
+                TimerSetValue( &Led1Timer, 250 ); //25 S.L
 
                 TimerInit( &Led2Timer, OnLed2TimerEvent );
-                TimerSetValue( &Led2Timer, 25 );
+                TimerSetValue( &Led2Timer, 250 ); //25 S.L
 
                 mibReq.Type = MIB_ADR;
                 mibReq.Param.AdrEnable = LORAWAN_ADR_ON;
